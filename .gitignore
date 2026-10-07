@@ -1,0 +1,18 @@
+# Secrets
+*.env
+.env.*
+**/application-dev.properties
+**/application-prod.properties
+
+# Java
+target/
+*.class
+*.jar
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store

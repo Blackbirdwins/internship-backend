@@ -1,0 +1,55 @@
+{
+  "info": {
+    "_postman_id": "ea1ca539-8803-4a8c-9712-87e1efddef26",
+    "name": "Internship Day 1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58207924",
+    "_collection_link": "https://go.postman.co/collection/58207924-ea1ca539-8803-4a8c-9712-87e1efddef26?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET Post",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Post",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Post",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE Post",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    }
+  ]
+}

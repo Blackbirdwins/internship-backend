@@ -1,0 +1,63 @@
+ 1 adding a user : curl -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"ali","password":"ali123"}'
+
+2 logging in a user : curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"anas","password":"anas123"}'
+
+3 setting a token : TOKEN="yahan-token-paste-karo"
+
+4 Adding a new student : curl -X POST http://localhost:8080/api/students \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"name":"Bilal Ahmed","email":"bilal@test.com","age":22,"course":"Computer Science"}'
+
+
+
+5 Adding multiple students :
+
+First generate a script file : nano ~/add_students.sh
+
+than copy and paste this code : #!/bin/bash
+
+names=("Hamza Ali" "Ayesha Khan" "Usman Tariq" "Fatima Noor" "Bilal Ahmed")
+emails=("hamza@test.com" "ayesha@test.com" "usman@test.com" "fatima@test.com" "bilal@test.com")
+ages=(20 21 22 23 24)
+courses=("CS" "SE" "IT" "AI" "DS")
+
+for i in {0..4}; do
+  curl -X POST http://localhost:8080/api/students \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $TOKEN" \
+    -d "{\"name\":\"${names[$i]}\",\"email\":\"${emails[$i]}\",\"age\":${ages[$i]},\"course\":\"${courses[$i]}\"}"
+  echo ""
+done
+
+echo "Done! 5 students added."
+
+than press control+O press enter and than press control+x to exit
+
+than create an executable : chmod +x ~/add_students.sh
+
+and run : ~/add_students.sh
+
+it would add the five students.
+
+
+6 to search all students search :	curl http://localhost:8080/api/students \
+  -H "Authorization: Bearer $TOKEN"
+
+7 to search a single student : curl http://localhost:8080/api/students/1 \
+  -H "Authorization: Bearer $TOKEN"
+
+8 to update a student use : curl -X PUT http://localhost:8080/api/students/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"name":"Anas Khan","email":"anas@test.com","age":21,"course":"Software Engineering"}'
+
+9 to delete a student : curl -X DELETE http://localhost:8080/api/students/1 \
+  -H "Authorization: Bearer $TOKEN"
+
+
+

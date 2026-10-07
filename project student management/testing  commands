@@ -1,0 +1,16 @@
+1
+
+without token test : curl -i http://localhost:8080/api/students 
+would give error 403
+2
+
+Login Test : curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"anas","password":"anas123"}'
+It would give you token.
+
+3
+Testing with token : TOKEN=""
+
+curl -i http://localhost:8080/api/students \
+  -H "Authorization: Bearer $TOKEN"

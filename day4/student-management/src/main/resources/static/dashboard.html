@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Management Dashboard</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f4f6f9; }
+        h1 { color: #333; }
+        table { border-collapse: collapse; width: 100%; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #2196F3; color: white; }
+        input, button { padding: 10px; font-size: 16px; margin-right: 5px; }
+        button { background: #2196F3; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        button:hover { background: #1976D2; }
+        .live-count { background: #e3f2fd; padding: 15px; margin-bottom: 15px; border-left: 4px solid #2196F3; }
+    </style>
+</head>
+<body>
+    <h1> Student Management Dashboard</h1>
+
+    <div class="live-count">
+        <strong>Live Student Count:</strong> <span id="liveCount">-</span>
+    </div>
+
+    <div>
+        <input type="text" id="name" placeholder="Name">
+        <input type="email" id="email" placeholder="Email">
+        <input type="number" id="age" placeholder="Age">
+        <input type="text" id="course" placeholder="Course">
+        <button onclick="addStudent()">Add Student</button>
+        <button onclick="loadStudents()">Refresh</button>
+    </div>
+
+    <br>
+
+    <table id="studentTable">
+        <tr>
+            <th>ID</th><th>Name</th><th>Email</th><th>Age</th><th>Course</th><th>Action</th>
+        </tr>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
+    <script>
+        async function addStudent() {
+            const body = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                age: parseInt(document.getElementById('age').value) || null,
+                course: document.getElementById('course').value
+            };
+            const res = await fetch('/api/students', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(body)
+            });
+            if (res.ok) {
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('age').value = '';
+                document.getElementById('course').value = '';
+                loadStudents();
+            } else {
+                alert('Error adding student');
+            }
+        }
+
+        async function deleteStudent(id) {
+            await fetch('/api/students/' + id, { method: 'DELETE' });
+            loadStudents();
+        }
+
+        async function loadStudents() {
+            const res = await fetch('/api/students');
+            const data = await res.json();
+            const t = document.getElementById('studentTable');
+            t.innerHTML = '<tr><th>ID</th><th>Name</th><th>Email</th><th>Age</th><th>Course</th><th>Action</th></tr>';
+            data.forEach(s => {
+                const r = t.insertRow();
+                r.innerHTML = `<td>${s.id}</td><td>${s.name}</td><td>${s.email}</td><td>${s.age || ''}</td><td>${s.course || ''}</td>
+                    <td><button onclick="deleteStudent(${s.id})">Delete</button></td>`;
+            });
+        }
+
+        const client = new StompJs.Client({
+            webSocketFactory: () => new SockJS('/ws'),
+            onConnect: () => {
+                client.subscribe('/topic/students/count', (msg) => {
+                    const data = JSON.parse(msg.body);
+                    document.getElementById('liveCount').textContent = data.count;
+                });
+            }
+        });
+        client.activate();
+
+        loadStudents();
+    </script>
+</body>
+</html>
