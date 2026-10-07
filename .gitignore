@@ -1,13 +1,8 @@
-# Secrets
-*.env
-.env.*
-**/application-dev.properties
-**/application-prod.properties
-
-# Java
+# Build outputs
 target/
-*.class
-*.jar
+node_modules/
+dist/
+build/
 
 # IDE
 .idea/
@@ -16,3 +11,10 @@ target/
 
 # OS
 .DS_Store
+
+# Logs
+*.log
+
+# Secrets
+*.env
+.env.*
